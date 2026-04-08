@@ -98,7 +98,7 @@
             <el-avatar src="/image/linuxdo.webp" :size="18" style="margin-right: 10px" />LinuxDo
           </el-button>
         </div>
-        <template v-if="settingStore.settings.register === 0">
+        <template v-if="registerEntryVisible">
           <div class="switch" @click="show = 'register'" v-if="show === 'login'">{{ $t('noAccount') }}
             <span>{{ $t('regSwitch') }}</span></div>
           <div class="switch" @click="show = 'login'" v-else>{{ $t('hasAccount') }} <span>{{ $t('loginSwitch') }}</span>
@@ -148,7 +148,7 @@
 
 <script setup>
 import router from "@/router";
-import {computed, nextTick, reactive, ref} from "vue";
+import {computed, nextTick, reactive, ref, watch} from "vue";
 import {login} from "@/request/login.js";
 import {register} from "@/request/login.js";
 import {isEmail} from "@/utils/verify-utils.js";
@@ -173,6 +173,18 @@ const bindLoading = ref(false)
 const oauthLoading = ref(false);
 const showBindForm = ref(false);
 const show = ref('login')
+
+/** 后台「开放注册」且 Worker 未设置 HIDE_PUBLIC_REGISTER=true 时显示「创建账号」 */
+const registerEntryVisible = computed(() => {
+  const s = settingStore.settings
+  return s.register === 0 && s.showRegisterEntry !== false
+})
+
+watch(registerEntryVisible, (visible) => {
+  if (!visible && show.value === 'register') {
+    show.value = 'login'
+  }
+})
 
 const bindForm = reactive({
   email: '',

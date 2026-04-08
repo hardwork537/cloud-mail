@@ -2,6 +2,7 @@ const en = {
 	IncorrectPwd: 'Incorrect password',
 	addAccountDisabled: 'Add Email Address feature is disabled',
 	regDisabled: 'Sign up is disabled',
+	envPublicRegisterDisabled: 'Public sign-up is disabled',
 	emptyEmail: 'Email cannot be empty',
 	notEmail: 'Invalid email',
 	notExistDomain: 'Email domain does not exist',

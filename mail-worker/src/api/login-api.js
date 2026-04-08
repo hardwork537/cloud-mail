@@ -2,6 +2,8 @@ import app from '../hono/hono';
 import loginService from '../service/login-service';
 import result from '../model/result';
 import userContext from '../security/user-context';
+import BizError from '../error/biz-error';
+import { t } from '../i18n/i18n';
 
 app.post('/login', async (c) => {
 	const token = await loginService.login(c, await c.req.json());
@@ -9,6 +11,9 @@ app.post('/login', async (c) => {
 });
 
 app.post('/register', async (c) => {
+	if (c.env.HIDE_PUBLIC_REGISTER === 'true') {
+		throw new BizError(t('envPublicRegisterDisabled'), 403);
+	}
 	const jwt = await loginService.register(c, await c.req.json());
 	return c.json(result.ok(jwt));
 });

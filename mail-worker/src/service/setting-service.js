@@ -188,8 +188,11 @@ const settingService = {
 
 		const settingRow = await this.get(c, true);
 
+		const hidePublicRegister = c.env.HIDE_PUBLIC_REGISTER === 'true';
+
 		return {
 			register: settingRow.register,
+			showRegisterEntry: !hidePublicRegister,
 			title: settingRow.title,
 			manyEmail: settingRow.manyEmail,
 			addEmail: settingRow.addEmail,
